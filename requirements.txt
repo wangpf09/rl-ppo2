@@ -1,0 +1,6 @@
+swig
+gym
+gym[all]
+moviepy
+
+torch
