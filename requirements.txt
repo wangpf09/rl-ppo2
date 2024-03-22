@@ -5,4 +5,5 @@ moviepy
 
 torch
 matplotlib
+tensorboard
 tensorboardX

@@ -90,8 +90,8 @@ class PPO2:
 
     def update_critic(self, current_round):
         critics = self.critic(torch.cat(self.states))
-        targets = torch.tensor(self.rewards).to(self.device) + torch.cat(
-            (critics[1:], torch.tensor([[0.0]]).to(self.device)))
+        targets = torch.tensor(self.rewards).float().to(self.device) + torch.cat(
+            (critics[1:], torch.tensor([[0.0]]).float().to(self.device)))
         criterion = nn.MSELoss()
         self.optimizer_critic.zero_grad()
         critics = critics.expand_as(targets)
@@ -99,13 +99,3 @@ class PPO2:
         self.writer.add_scalar('loss/critic', loss, current_round)
         loss.backward()
         self.optimizer_critic.step()
-
-    def save_model(self, current_round, best=False):
-        print("Saving model...")
-        if best:
-            # 保存最优模型状态
-            torch.save(self.actor.state_dict(), f'./models/best_actor.pth')
-            torch.save(self.critic.state_dict(), f'./models/best_critic.pth')
-        else:
-            torch.save(self.actor.state_dict(), f'./models/actor_{current_round}.pth')
-            torch.save(self.critic.state_dict(), f'./models/critic_{current_round}.pth')

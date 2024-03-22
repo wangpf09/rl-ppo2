@@ -1,12 +1,10 @@
 import torch
 
-import train
 from algorithm import ppo2
 from game import game_env
 
 
-def eval_episode():
-    env_id = "CartPole-v1"
+def eval_model(env_id):
     env = game_env.init_env(env_id, True)
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.n
@@ -18,7 +16,7 @@ def eval_episode():
     ppo.actor.eval()
     ppo.critic.eval()
     with torch.no_grad():
-        play_in_round(env, ppo, 100)
+        play_in_round(env, ppo, 10)
 
 
 def play_in_round(env, ppo, max_episodes):
@@ -42,4 +40,5 @@ def play_in_round(env, ppo, max_episodes):
 
 
 if __name__ == '__main__':
-    eval_episode()
+    _env_id = "LunarLander-v2"
+    eval_model(_env_id)
